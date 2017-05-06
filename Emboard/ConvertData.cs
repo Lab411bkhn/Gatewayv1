@@ -78,9 +78,9 @@ namespace Emboard
                     else
                     {
                         db.setNodeActor(mac, ip, true);
-                    } 
+                    }
                 }
-                else if ((mac[0] > '2') && mac[0]<'6')
+                else if ((mac[0] > '2') && mac[0] < '6')
                 {
                     checkSensor = true;
                     sensor.Mac = mac;
@@ -171,7 +171,7 @@ namespace Emboard
                 if (check == 8)
                 {
                     actor.StatusActor = true;
-                    if(van.VanID == 15)
+                    if (van.VanID == 15)
                     {
                         db.setValOn();
                     }
@@ -183,13 +183,13 @@ namespace Emboard
                 else
                 {
                     actor.StatusActor = false;
-                    if(van.VanID == 15)
+                    if (van.VanID == 15)
                     {
                         db.setValOff();
                     }
                     else
                     {
-                        db.setStateVal(van.VanID,"off");
+                        db.setStateVal(van.VanID, "off");
                     }
                 }
             }
@@ -234,7 +234,7 @@ namespace Emboard
             catch (Exception _Exception)
             {
                 // Error
-                MessageBox.Show("Exception caught in process:"+ _Exception.ToString());
+                MessageBox.Show("Exception caught in process:" + _Exception.ToString());
             }
             // error occured, return false
             return false;
@@ -249,14 +249,14 @@ namespace Emboard
             {
                 db = new Database();
                 db.setActiveSensor(data.Substring(4, 2), false);
-                sensor.Mac = data.Substring(4,2);
+                sensor.Mac = data.Substring(4, 2);
             }
             catch (Exception ex)
             {
                 ERR = ex.ToString();
             }
         }
-       
+
         /// <summary>
         /// ghep du lieu anh trong 1 mang
         /// </summary>
@@ -266,12 +266,13 @@ namespace Emboard
         {
             string strOut = null;
             //int mac = int.Parse(Mac, System.Globalization.NumberStyles.HexNumber);
-            for( int i = 0; i<strImg.GetLength(0);i++){
-            try
+            for (int i = 0; i < strImg.GetLength(0); i++)
             {
-                    strOut += strImg[mac,i];
-            }
-            catch { MessageBox.Show("Cannot mux image data"); }
+                try
+                {
+                    strOut += strImg[mac, i];
+                }
+                catch { MessageBox.Show("Cannot mux image data"); }
             }
             return strOut;
             //strImg[mac] = strImg[mac] + stringIn;
@@ -306,25 +307,27 @@ namespace Emboard
                 ///#RC:000132000F0012345678  #RC:IP Mac Dodai STT DATA
                 const int DataLen = 80;
                 int[] lengthImage = new int[100];
-                string dodai = null, STT = null, temp=null;
+                string dodai, STT, temp;
                 sensor.Ip = data.Substring(4, 4);
                 sensor.Mac = data.Substring(8, 2);
                 dodai = data.Substring(10, 4);
                 STT = data.Substring(14, 2);
                 int mac = int.Parse(sensor.Mac, System.Globalization.NumberStyles.HexNumber);
-                sensor.LengthImage[mac] = int.Parse(dodai, System.Globalization.NumberStyles.HexNumber);
+                lengthImage[mac] = int.Parse(dodai, System.Globalization.NumberStyles.HexNumber);
                 int i = int.Parse(STT, System.Globalization.NumberStyles.HexNumber);
                 //if (i == 0) { StringImage[mac] = null; }
                 temp = data.Substring(16, data.Length - 17);  //Bo 16 ky tu dau va 1 ky tu \n o cuoi data
                 sensor.ArrayStringImage[mac, i] = temp;
-                if (i >= (sensor.LengthImage[mac] / DataLen))
+                if (i >= (lengthImage[mac] / DataLen))
                 {
-                    sensor.Img_path = @"\Storage Card\data\Image\ImageSensor"+sensor.Mac+DateTime.Now.ToString("hhmmss")+".jpeg";
-                    string data12 = addStringImage(mac, sensor.ArrayStringImage);
-                    byte[] byteArr = new byte[sensor.LengthImage[mac]];
-                    byteArr = stringToHex(data12);
                     try
                     {
+                        string path_temp = @"\Storage Card\Sigate\Image\";
+                        if (!System.IO.Directory.Exists(path_temp))
+                            System.IO.Directory.CreateDirectory(path_temp);
+                        sensor.Img_path = @"\Storage Card\Sigate\Image\ImageSensor" + sensor.Mac.ToString() + DateTime.Now.ToString("hhmmss") + ".jpeg";
+                        temp = addStringImage(mac, sensor.ArrayStringImage);
+                        byte[] byteArr = stringToHex(temp);
                         if (ByteArrayToFile(sensor.Img_path, byteArr))
                             //Stream strm = new MemoryStream(byteArr);                        
                             //temp = "#RC:"+ sensor.Ip + sensor.Mac + StringImage[mac];
@@ -332,7 +335,7 @@ namespace Emboard
                             sensor.TakePhotoDone = true;
                         else sensor.TakePhotoDone = false;
                     }
-                    catch (Exception ex) { MessageBox.Show("ByteArray To File error" + ex.ToString()); }
+                    catch (Exception ex) { MessageBox.Show("Save file error" + ex.ToString()); }
                 }
             }
             catch (Exception ex)

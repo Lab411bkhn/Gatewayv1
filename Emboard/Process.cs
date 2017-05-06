@@ -86,7 +86,7 @@ namespace Emboard
         {
             set { time_control = value; }
             get { return time_control; }
-    }
+        }
 
         /// <summary>
         /// Ham khoi tao 
@@ -94,14 +94,15 @@ namespace Emboard
         /// </summary>
         /// <param name="name"></param>
         /// <param name="baud"></param>
-        public Process() : base()
-        {}
+        public Process()
+            : base()
+        { }
 
         /// <summary>
-       /// Override lai ham nhan du lieu tu router emboard qua cong COM
-       /// </summary>
-       /// <param name="sender"></param>
-       /// <param name="e"></param>
+        /// Override lai ham nhan du lieu tu router emboard qua cong COM
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public override void comPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             try
@@ -118,25 +119,25 @@ namespace Emboard
                 ERR = ex.Message;
             }
         }
-       /* public override void comSMS_DataReceived(object sender, SerialDataReceivedEventArgs e)
-        { 
-             try
-            {
-                if (COMSMS.IsOpen == true)
-                {
-                    DataReadCOMSMS = this.ReadSMS(COMSMS).ToString();
-                    MessageBox.Show("DOC TIN NHAN");
-                   // DataReadCOMSMS = COMSMS.ReadLine();
-                    DataProcess.Enqueue(DataReadCOMSMS);
-                    //dataReadCOM = COMSMS.ReadLine();
-                    //dataReadCOMSMS = COMSMS.ReadExisting();
-                }
-            }
-            catch (Exception ex)
-            {
-                ERR = ex.Message;
-            }
-        }*/
+        /* public override void comSMS_DataReceived(object sender, SerialDataReceivedEventArgs e)
+         { 
+              try
+             {
+                 if (COMSMS.IsOpen == true)
+                 {
+                     DataReadCOMSMS = this.ReadSMS(COMSMS).ToString();
+                     MessageBox.Show("DOC TIN NHAN");
+                    // DataReadCOMSMS = COMSMS.ReadLine();
+                     DataProcess.Enqueue(DataReadCOMSMS);
+                     //dataReadCOM = COMSMS.ReadLine();
+                     //dataReadCOMSMS = COMSMS.ReadExisting();
+                 }
+             }
+             catch (Exception ex)
+             {
+                 ERR = ex.Message;
+             }
+         }*/
         public void processData()
         {
             try
@@ -146,7 +147,7 @@ namespace Emboard
                     if (DataProcess.Count > 0)
                     {
                         string temp = DataProcess.Dequeue().ToString();
-                        string temp2 = temp.Substring(0,5);
+                        string temp2 = temp.Substring(0, 5);
                         if (temp2 != "Route")
                         {
                             convertData(temp);
@@ -163,7 +164,7 @@ namespace Emboard
             catch { }
         }
         public Thread threadSMS = null;
-        
+
         public void ThreadProcessData()
         {
             threadProcess = new Thread(new ThreadStart(processData));
@@ -193,7 +194,7 @@ namespace Emboard
                         Data.convertDataJoinNetwork(data);
                         if (Data.checkSensor == false)
                         {
-                            DisplayData("(" +showTime()+ "): Thong tin trang thai Actor: \r\n Actor " + actor.Ip + " (" + actor.Mac + ") " + " : \r\n Van hoat dong trong mang !!!\r\n", txtShowData);
+                            DisplayData("(" + showTime() + "): Thong tin trang thai Actor: \r\n Actor " + actor.Ip + " (" + actor.Mac + ") " + " : \r\n Van hoat dong trong mang !!!\r\n", txtShowData);
                         }
                         else
                         {
@@ -202,12 +203,12 @@ namespace Emboard
                         drawImage.reload(pic);
                         break;
                     case 'A':
-                         db = new Database();
-                         Data.convertDataSensor(data);
-                         DisplayData("(" + showTime() + "): Du lieu dinh ky :\r\n Sensor " + sensor.Ip + "(" + sensor.Mac + "): \r\n     Nhiet do: " + sensor.Temperature + "\r\n     Do am: " + sensor.Humidity + "\r\n     Nang luong : " + sensor.Energy + "\r\n", txtShowData);
-                         sensor.saveDataSensor(sensor.Mac, sensor.Ip, sensor.Temperature, sensor.Humidity, sensor.Energy);
-                         if(sensor.Mac[0] == '0')
-                         {
+                        db = new Database();
+                        Data.convertDataSensor(data);
+                        DisplayData("(" + showTime() + "): Du lieu dinh ky :\r\n Sensor " + sensor.Ip + "(" + sensor.Mac + "): \r\n     Nhiet do: " + sensor.Temperature + "\r\n     Do am: " + sensor.Humidity + "\r\n     Nang luong : " + sensor.Energy + "\r\n", txtShowData);
+                        sensor.saveDataSensor(sensor.Mac, sensor.Ip, sensor.Temperature, sensor.Humidity, sensor.Energy);
+                        if (sensor.Mac[0] == '0')
+                        {
                             int time_now_batvan = DateTime.Now.Hour * 3600 + DateTime.Now.Minute * 60 + DateTime.Now.Second;
                             string _van = db.getVanSensor(sensor.Mac);
                             int id = int.Parse(_van.Substring(1, 1));
@@ -220,7 +221,7 @@ namespace Emboard
                                     {
                                         int time_van_sau = db.getTimeVan(2);
                                         int time_van = db.getTimeVan(1);
-                                        int van_bat = van.selectVanOn(id, time_van,time_van_sau);
+                                        int van_bat = van.selectVanOn(id, time_van, time_van_sau);
                                         DisplayData("Thoi gian bat van 1 la: " + van.getTimeFormat(time_van), txtShowData);
                                         DisplayData("Thoi gian bat van 2 la: " + van.getTimeFormat(time_van_sau), txtShowData);
                                         DisplayData("Quyet dinh bat van: " + van_bat, txtShowData);
@@ -230,7 +231,8 @@ namespace Emboard
                                         byte[] byteCommand = ConvertTobyte(command);
                                         writeByteData(byteCommand);
                                     }
-                                    else if(id == 5){
+                                    else if (id == 5)
+                                    {
                                         int time_van_truoc = db.getTimeVan(4);
                                         int time_van = db.getTimeVan(5);
                                         int van_bat = van.selectVanOn(id, time_van, time_van_truoc);
@@ -258,7 +260,7 @@ namespace Emboard
                                         int time_van = db.getTimeVan(id);
                                         int time_van_truoc = db.getTimeVan(van_truoc);
                                         int time_van_sau = db.getTimeVan(van_sau);
-                                        int van_bat = van.selectVanOn(id, time_van, time_van_truoc,time_van_sau);
+                                        int van_bat = van.selectVanOn(id, time_van, time_van_truoc, time_van_sau);
                                         DisplayData("Thoi gian bat van " + id + " la: " + van.getTimeFormat(time_van), txtShowData);
                                         DisplayData("Thoi gian bat van " + van_truoc + " la: " + van.getTimeFormat(time_van_truoc), txtShowData);
                                         DisplayData("Thoi gian bat van " + van_sau + " la: " + van.getTimeFormat(time_van_sau), txtShowData);
@@ -272,15 +274,15 @@ namespace Emboard
                                     Van.statusVan[id_van_bat] = true;
                                     Van.countTimeOnVan[id_van_bat] = 0;
                                     ImformationNode.timeDapUng.Remove(id_van_bat);
-                                    ImformationNode.timeDapUng.Add(id_van_bat,time_now_batvan);
+                                    ImformationNode.timeDapUng.Add(id_van_bat, time_now_batvan);
                                 }
                                 else
                                 {
                                     DisplayData("Khong phai khoang thoi gian bat bom (" + db.getTimeStart() + " h - " + db.getTimeFinish() + " h)", txtShowData);
                                 }
                             }
-                         }
-                         drawImage.reload(pic);
+                        }
+                        drawImage.reload(pic);
                         break;
                     case 'R':
                         {
@@ -314,19 +316,21 @@ namespace Emboard
                                     string STT_t = data.Substring(14, 2); int STT_i = int.Parse(STT_t, System.Globalization.NumberStyles.HexNumber);
                                     if (Ip_i == 3) WebServer.dataSendToWeb.Enqueue("dang nhan du lieu anh");
                                     sensor.TakePhotoDone = false;
-                                    int totalPacket = dodai_i/80+1;
+                                    int totalPacket = dodai_i / 80 + 1;
                                     STT_i += 1;
                                     DisplayData("Ip:" + Ip_i.ToString() + "  Mac:" + Mac_i.ToString() + "  Goi" + STT_i.ToString() + "/" + totalPacket, txtShowData);
                                     Data.convertDataPicture(sensor.ArrayStringImage, data);
-                                    try {
-                                        DisplayImg(sensor.Img_path, picbox2); }
+                                    try
+                                    {
+                                        DisplayImg(sensor.Img_path, picbox2);
+                                    }
                                     catch { }
-                                    if (sensor.TakePhotoDone==true)
+                                    if (sensor.TakePhotoDone == true)
                                     {
                                         try
                                         {
                                             DisplayData("Take photo successfully!!!", txtShowData);
-                                            string temp = "#RC:" + sensor.Ip + sensor.Mac + Data.addStringImage(Mac_i,sensor.ArrayStringImage);
+                                            string temp = "#RC:" + sensor.Ip + sensor.Mac + Data.addStringImage(Mac_i, sensor.ArrayStringImage);
                                             WebServer.dataSendToWeb.Enqueue(temp);
                                             Thread.Sleep(1000);
                                             sensor.TakePhotoDone = false;
@@ -334,23 +338,22 @@ namespace Emboard
                                         catch
                                         { DisplayData("Khong gui dc du lieu anh len web", txtShowData); }
                                     }
-//                                    try
-//                                    {
-//                                        int time = DateTime.Now.Hour * 3600 + DateTime.Now.Minute * 60 + DateTime.Now.Second - (int)ImformationNode.timeDapUng[sensor.Mac];
-//                                        ImformationNode.timeDapUng.Remove(sensor.Mac);
-//                                        DisplayData("Thoi gian dap ung nhan anh: " + time + " giay\r\n", txtShowData);
-//                                        if (time < 60)
-//                                        {
-//#if ACTOR_BAOCHAY
-//                                            string timeSendToWeb = "DB" + time;
-//#else
-//                                    string timeSendToWeb = "DA" + time;
-//#endif
-//                                            WebServer.dataSendToWeb.Enqueue(timeSendToWeb);
-//                                        }
-//                                    }
-//                                    catch { DisplayData("", txtShowData); }
-                                    
+                                    //                                    try
+                                    //                                    {
+                                    //                                        int time = DateTime.Now.Hour * 3600 + DateTime.Now.Minute * 60 + DateTime.Now.Second - (int)ImformationNode.timeDapUng[sensor.Mac];
+                                    //                                        ImformationNode.timeDapUng.Remove(sensor.Mac);
+                                    //                                        DisplayData("Thoi gian dap ung nhan anh: " + time + " giay\r\n", txtShowData);
+                                    //                                        if (time < 60)
+                                    //                                        {
+                                    //#if ACTOR_BAOCHAY
+                                    //                                            string timeSendToWeb = "DB" + time;
+                                    //#else
+                                    //                                    string timeSendToWeb = "DA" + time;
+                                    //#endif
+                                    //                                            WebServer.dataSendToWeb.Enqueue(timeSendToWeb);
+                                    //                                        }
+                                    //                                    }
+                                    //                                    catch { DisplayData("", txtShowData); }
                                     break;
                             }
                         }
@@ -361,11 +364,11 @@ namespace Emboard
                             sensor.Mac = data.Substring(8, 2);
                             sensor.FunctionRetask = data.Substring(10, 2);
                             int ten = int.Parse(sensor.FunctionRetask);
-                            int canhbao = ten/4; string cbao = (canhbao==0)?"Disable":"Enable";
+                            int canhbao = ten / 4; string cbao = (canhbao == 0) ? "Disable" : "Enable";
                             canhbao = ten % 4;
-                            int photoI = canhbao/2; string photoS = (photoI==0)?"Disable":"Enable";
-                            int nhietdo = canhbao%2; string nhietdoS = (nhietdo==0)?"Disable":"Enable";
-                            DisplayData("Fuction sensor "+ sensor.Mac +" \r\n Teperature: " + nhietdoS + "\r\n Photo:" + photoS + "\r\n Warning:" + cbao,txtShowData);
+                            int photoI = canhbao / 2; string photoS = (photoI == 0) ? "Disable" : "Enable";
+                            int nhietdo = canhbao % 2; string nhietdoS = (nhietdo == 0) ? "Disable" : "Enable";
+                            DisplayData("Fuction sensor " + sensor.Mac + " \r\n Teperature: " + nhietdoS + "\r\n Photo:" + photoS + "\r\n Warning:" + cbao, txtShowData);
                             MessageBox.Show("Fuction: " + sensor.Mac + " \r\n Teperature: " + nhietdoS + "\r\n Photo:" + photoS + "\r\n Warning:" + cbao);
                         }
                         else
@@ -458,14 +461,14 @@ namespace Emboard
                                 {
                                     int time_canhbao = DateTime.Now.Hour * 3600 + DateTime.Now.Minute * 60 + DateTime.Now.Second - (int)ImformationNode.timeDapUng["warning"];
                                     ImformationNode.timeDapUng.Remove("warning");
-                                    DisplayData("Thoi gian dap ung canh bao chay "+time_canhbao+" giay", txtShowData);
+                                    DisplayData("Thoi gian dap ung canh bao chay " + time_canhbao + " giay", txtShowData);
                                     if (time_canhbao < 60)
                                     {
                                         string timeSendToWeb = "F" + time_canhbao;
                                         WebServer.dataSendToWeb.Enqueue(timeSendToWeb);
                                     }
                                 }
-                                catch{}
+                                catch { }
 #else
                                 DisplayData("(" + showTime() + "): Da bat van so " + van.VanID , txtShowData);
                                 //bat dau tinh thoi gian bat bơm
@@ -515,7 +518,7 @@ namespace Emboard
                         {
                             int time_actor = DateTime.Now.Hour * 3600 + DateTime.Now.Minute * 60 + DateTime.Now.Second - (int)ImformationNode.timeDapUng[actor.Mac];
                             ImformationNode.timeDapUng.Remove(actor.Mac);
-                            DisplayData("Thoi gian dap ung dieu khien actor "+time_actor+" giay\r\n", txtShowData);
+                            DisplayData("Thoi gian dap ung dieu khien actor " + time_actor + " giay\r\n", txtShowData);
                             if (time_actor < 60)
                             {
 #if ACTOR_BAOCHAY
@@ -534,7 +537,7 @@ namespace Emboard
                         DisplayData("(" + showTime() + "): Thong tin trang thai sensor: \r\n Sensor " + sensor.Ip + " (" + sensor.Mac + ") " + " : \r\n Van hoat dong trong mang !!!\r\n", txtShowData);
                         break;
                     default:
-                        DisplayData(data,txtShowData);
+                        DisplayData(data, txtShowData);
                         break;
                 }
             }
@@ -544,7 +547,7 @@ namespace Emboard
                 DisplayData("Convert Data Error!!!\r\n" + ERR, txtShowData);
             }
         }
-        
+
         /// <summary>
         /// Ham khoi tao timer
         /// </summary>
@@ -649,7 +652,7 @@ namespace Emboard
                 }
                 return lv;
             }
-            catch 
+            catch
             {
                 return 1;
             }
@@ -699,59 +702,59 @@ namespace Emboard
         /// </summary>
         public void Request()
         {
-                string[] url = connection.Confix();
-                string uriCom = url[4];
-                DisplayData("Listing from:" + uriCom, txtShowData);
-                while (true)
+            string[] url = connection.Confix();
+            string uriCom = url[4];
+            DisplayData("Listing from:" + uriCom, txtShowData);
+            while (true)
+            {
+                try
                 {
-                    try
+                    web.DataReceiveFromWeb = web.receiveDataFromWeb(uriCom);
+                    if (web.DataReceiveFromWeb.Length > 0)
                     {
-                        web.DataReceiveFromWeb = web.receiveDataFromWeb(uriCom);
-                        if (web.DataReceiveFromWeb.Length > 0)
+                        if (web.DataReceiveFromWeb[0] == '#')
                         {
-                            if (web.DataReceiveFromWeb[0] == '#')
-                            {
-                                Database myDatabase = new Database();
-                                int van = int.Parse(web.DataReceiveFromWeb.Substring(1, 1));
-                                float temp = float.Parse(web.DataReceiveFromWeb.Substring(2, 2));
-                                float humi = float.Parse(web.DataReceiveFromWeb.Substring(4, 2));
-                                myDatabase.setHumiVan(van, humi);
-                                myDatabase.setTempVan(van, temp);
-                                DisplayData("(" + showTime() + "): Cai dat nguong tu WEB:", txtShowData);
-                                DisplayData("Van so : " + van, txtShowData);
-                                DisplayData("Nhiet do : " + temp + "°C", txtShowData);
-                                DisplayData("Do am : " + humi + "%", txtShowData);
-                            }
-                            else
-                            {
-                                string mac = web.DataReceiveFromWeb.Substring(0, 2);
-                                DisplayData("(" + showTime() + "): Lenh gui tu web den sensor " + mac, txtShowData);
-                                int time_web = DateTime.Now.Hour * 3600 + DateTime.Now.Minute * 60 + DateTime.Now.Second;
-                                ImformationNode.timeDapUng.Remove(mac);
-                                ImformationNode.timeDapUng.Add(mac, time_web);
-                                DisplayData("Ma lenh :" + web.DataReceiveFromWeb, txtShowData);
-                                if (web.DataReceiveFromWeb.Length > 9)
-                                {
-                                    byte[] commandWeb = ConvertTobyte(web.DataReceiveFromWeb.Substring(2, 8));
-                                    writeByteData(commandWeb);
-                                }
-                            }
-                            web.DataReceiveFromWeb = null;
+                            Database myDatabase = new Database();
+                            int van = int.Parse(web.DataReceiveFromWeb.Substring(1, 1));
+                            float temp = float.Parse(web.DataReceiveFromWeb.Substring(2, 2));
+                            float humi = float.Parse(web.DataReceiveFromWeb.Substring(4, 2));
+                            myDatabase.setHumiVan(van, humi);
+                            myDatabase.setTempVan(van, temp);
+                            DisplayData("(" + showTime() + "): Cai dat nguong tu WEB:", txtShowData);
+                            DisplayData("Van so : " + van, txtShowData);
+                            DisplayData("Nhiet do : " + temp + "°C", txtShowData);
+                            DisplayData("Do am : " + humi + "%", txtShowData);
                         }
+                        else
+                        {
+                            string mac = web.DataReceiveFromWeb.Substring(0, 2);
+                            DisplayData("(" + showTime() + "): Lenh gui tu web den sensor " + mac, txtShowData);
+                            int time_web = DateTime.Now.Hour * 3600 + DateTime.Now.Minute * 60 + DateTime.Now.Second;
+                            ImformationNode.timeDapUng.Remove(mac);
+                            ImformationNode.timeDapUng.Add(mac, time_web);
+                            DisplayData("Ma lenh :" + web.DataReceiveFromWeb, txtShowData);
+                            if (web.DataReceiveFromWeb.Length > 9)
+                            {
+                                byte[] commandWeb = ConvertTobyte(web.DataReceiveFromWeb.Substring(2, 8));
+                                writeByteData(commandWeb);
+                            }
+                        }
+                        web.DataReceiveFromWeb = null;
                     }
-                    catch (Exception ex)
-                    {
-                        DisplayData("Khong the lay du lieu tu WEB \n"+ex, txtShowData);
-                    }
-                    Thread.Sleep(200);
                 }
+                catch (Exception ex)
+                {
+                    DisplayData("Khong the lay du lieu tu WEB \n" + ex, txtShowData);
+                }
+                Thread.Sleep(200);
             }
+        }
 
         /// <summary>
         /// Ham mo Thread nhan du lieu tu web
         /// </summary>
         public void ThreadReceiveFromWeb()
-        {   
+        {
             web.threadReceiveFromWeb = new Thread(new ThreadStart(Request));
             web.threadReceiveFromWeb.IsBackground = true;
             web.threadReceiveFromWeb.Start();
@@ -779,7 +782,7 @@ namespace Emboard
                     Thread.Sleep(300);
                 }
             }
-            catch {}
+            catch { }
         }
 
         /// <summary>
@@ -790,13 +793,15 @@ namespace Emboard
             web.threadSendToWeb = new Thread(new ThreadStart(send));
             web.threadSendToWeb.IsBackground = true;
             web.threadSendToWeb.Start();
-            DisplayData("ThreadSendToWeb is opened!",txtShowData);
+            DisplayData("ThreadSendToWeb is opened!", txtShowData);
         }
-        public void clearDataCOM() {
-            try {
+        public void clearDataCOM()
+        {
+            try
+            {
                 COMPort.DiscardInBuffer();
             }
-            catch{}
+            catch { }
         }
     }
 }
