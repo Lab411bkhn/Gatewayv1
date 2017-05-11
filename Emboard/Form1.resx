@@ -176,16 +176,16 @@
 </value>
   </data>
   <metadata name="ctMenuVan.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>146, 17</value>
+    <value>104, 17</value>
   </metadata>
   <metadata name="ctMenuActor.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>276, 17</value>
+    <value>218, 17</value>
   </metadata>
   <metadata name="ctMenuSensor.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>406, 17</value>
+    <value>340, 17</value>
   </metadata>
   <metadata name="ctxMenuReset.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>536, 17</value>
+    <value>470, 17</value>
   </metadata>
   <metadata name="$this.FormFactorShadowProperty" xml:space="preserve">
     <value>WEBPAD</value>

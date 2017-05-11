@@ -128,6 +128,7 @@
             this.menuHumi = new System.Windows.Forms.MenuItem();
             this.ctxMenuReset = new System.Windows.Forms.ContextMenu();
             this.mnReset = new System.Windows.Forms.MenuItem();
+            this.lblTimeNow = new System.Windows.Forms.Label();
             this.tabMap.SuspendLayout();
             this.pnShow.SuspendLayout();
             this.tabSetting.SuspendLayout();
@@ -740,6 +741,7 @@
             // panel5
             // 
             this.panel5.AutoScroll = true;
+            this.panel5.Controls.Add(this.lblTimeNow);
             this.panel5.Controls.Add(this.cbnode);
             this.panel5.Controls.Add(this.label1);
             this.panel5.Controls.Add(this.label2);
@@ -751,9 +753,9 @@
             // 
             // cbnode
             // 
-            this.cbnode.Location = new System.Drawing.Point(310, 0);
+            this.cbnode.Location = new System.Drawing.Point(280, 0);
             this.cbnode.Name = "cbnode";
-            this.cbnode.Size = new System.Drawing.Size(150, 23);
+            this.cbnode.Size = new System.Drawing.Size(91, 23);
             this.cbnode.TabIndex = 25;
             // 
             // label1
@@ -765,9 +767,9 @@
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(252, 2);
+            this.label2.Location = new System.Drawing.Point(236, 3);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(56, 20);
+            this.label2.Size = new System.Drawing.Size(47, 20);
             this.label2.Text = "Node:";
             // 
             // cbMalenh
@@ -790,7 +792,7 @@
             this.cbMalenh.Items.Add("Tat tat ca van");
             this.cbMalenh.Location = new System.Drawing.Point(74, 0);
             this.cbMalenh.Name = "cbMalenh";
-            this.cbMalenh.Size = new System.Drawing.Size(150, 23);
+            this.cbMalenh.Size = new System.Drawing.Size(147, 23);
             this.cbMalenh.TabIndex = 15;
             this.cbMalenh.SelectedIndexChanged += new System.EventHandler(this.cbMalenh_SelectedIndexChanged);
             // 
@@ -821,9 +823,9 @@
             // btConnect
             // 
             this.btConnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btConnect.Location = new System.Drawing.Point(47, 6);
+            this.btConnect.Location = new System.Drawing.Point(35, 6);
             this.btConnect.Name = "btConnect";
-            this.btConnect.Size = new System.Drawing.Size(83, 26);
+            this.btConnect.Size = new System.Drawing.Size(78, 26);
             this.btConnect.TabIndex = 0;
             this.btConnect.Text = "Connect";
             this.btConnect.Click += new System.EventHandler(this.btConnect_Click);
@@ -1006,6 +1008,13 @@
             this.mnReset.Text = "Reset";
             this.mnReset.Click += new System.EventHandler(this.mnReset_Click);
             // 
+            // lblTimeNow
+            // 
+            this.lblTimeNow.Location = new System.Drawing.Point(377, 3);
+            this.lblTimeNow.Name = "lblTimeNow";
+            this.lblTimeNow.Size = new System.Drawing.Size(84, 20);
+            this.lblTimeNow.Text = "00:00:00 CH";
+            // 
             // Emboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1138,6 +1147,7 @@
         private System.Windows.Forms.Panel panel7;
         public System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.LinkLabel linkRetasking;
+        private System.Windows.Forms.Label lblTimeNow;
     }
 }
 

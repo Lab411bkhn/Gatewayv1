@@ -50,6 +50,16 @@ namespace Emboard
         }
 
         /// <summary>
+        /// lenh gui tu dong sau khi het thoi gian time out (lenh gui tu web)
+        /// </summary>
+        private string commandTimeout = null;
+        public string CommandTimeout
+        {
+            get { return commandTimeout; }
+            set { commandTimeout = value; }
+        }
+
+        /// <summary>
         /// Ma lenh khi chuyen thanh mang byte cac node
         /// </summary>
         private byte[] commandbyte = null;

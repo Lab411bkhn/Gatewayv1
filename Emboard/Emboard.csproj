@@ -122,6 +122,7 @@
     <Compile Include="TabSetting.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="TimeOutCommand.cs" />
     <Compile Include="Van.cs" />
     <Compile Include="WebServer.cs" />
   </ItemGroup>

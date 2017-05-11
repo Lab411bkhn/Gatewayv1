@@ -37,6 +37,7 @@ namespace Emboard
         private void Emboard_Load(object sender,EventArgs e)
         {
             Database db = new Database();
+            comPort.lblTimeNow = lblTimeNow;
             comPort.pic = pictureBox1;
             comPort.picbox2 = pictureBox2;
             //ConvertData CData = new ConvertData();

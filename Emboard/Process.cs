@@ -24,6 +24,7 @@ namespace Emboard
     {
         static int idTimeSendCanhBao = 0;
         private static int time_alarm = 0;
+        public Label lblTimeNow;
         public int Time_alarm
         {
             set { time_alarm = value; }
@@ -37,6 +38,11 @@ namespace Emboard
         /// </summary>
         public System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         public System.Windows.Forms.Timer timerUpdateYahooInfor;
+
+        /// <summary>
+        /// timer dap ung gui lenh chup anh tu du doan chuyen dong
+        /// </summary>
+        public System.Windows.Forms.Timer timerSendCommand = new System.Windows.Forms.Timer();
 
         /// <summary>
         /// Tao doi tuong sensor
@@ -94,9 +100,12 @@ namespace Emboard
         /// </summary>
         /// <param name="name"></param>
         /// <param name="baud"></param>
-        public Process()
-            : base()
-        { }
+        public Process() : base()
+        {
+            timerSendCommand.Enabled = true;
+            timerSendCommand.Interval = 1000;
+            timerSendCommand.Tick += new System.EventHandler(runSendCommand);
+        }
 
         /// <summary>
         /// Override lai ham nhan du lieu tu router emboard qua cong COM
@@ -559,6 +568,18 @@ namespace Emboard
             timer.Tick += new System.EventHandler(runTimer);
         }
 
+        public void runSendCommand(object sender, System.EventArgs e)
+        {
+            string timeNow = System.DateTime.Now.ToString("hhmmss");
+            lblTimeNow.Text = System.DateTime.Now.ToString("hh:mm:ss tt");
+            if (timeNow == sensor.TimeToTakePhoto)
+            {
+                MessageBox.Show("Da gui lenh chup anh");
+                byte[] commandbyte = ConvertTobyte(sensor.CommandTimeout);
+                writeByteData(commandbyte);
+            }
+        }
+
         /// <summary>
         /// cap nhat thong tin thoi tiet tu yahooo
         /// </summary>
@@ -714,16 +735,30 @@ namespace Emboard
                     {
                         if (web.DataReceiveFromWeb[0] == '#')
                         {
-                            Database myDatabase = new Database();
-                            int van = int.Parse(web.DataReceiveFromWeb.Substring(1, 1));
-                            float temp = float.Parse(web.DataReceiveFromWeb.Substring(2, 2));
-                            float humi = float.Parse(web.DataReceiveFromWeb.Substring(4, 2));
-                            myDatabase.setHumiVan(van, humi);
-                            myDatabase.setTempVan(van, temp);
-                            DisplayData("(" + showTime() + "): Cai dat nguong tu WEB:", txtShowData);
-                            DisplayData("Van so : " + van, txtShowData);
-                            DisplayData("Nhiet do : " + temp + "°C", txtShowData);
-                            DisplayData("Do am : " + humi + "%", txtShowData);
+                            if (web.DataReceiveFromWeb[1] == 'P')       //#P:0035-045615-0.44829630185149
+                            {
+                                string netip = web.DataReceiveFromWeb.Substring(3, 4);
+                                sensor.TimeToTakePhoto = web.DataReceiveFromWeb.Substring(8, 6);
+                                string objectSpeed = web.DataReceiveFromWeb.Substring(15, web.DataReceiveFromWeb.Length - 16);
+                                //string cmd = netip + "400$";
+                                //TimeOutCommand obj = new TimeOutCommand(sensor.TimeToTakePhoto,cmd);
+                                sensor.CommandTimeout = netip + "400$";
+                                //timerSendCommand.Enabled = true;
+                                DisplayData("Gui lenh chup anh den sensor luc " + sensor.TimeToTakePhoto,txtShowData);
+                            }
+                            else 
+                            {
+                                Database myDatabase = new Database();
+                                int van = int.Parse(web.DataReceiveFromWeb.Substring(1, 1));
+                                float temp = float.Parse(web.DataReceiveFromWeb.Substring(2, 2));
+                                float humi = float.Parse(web.DataReceiveFromWeb.Substring(4, 2));
+                                myDatabase.setHumiVan(van, humi);
+                                myDatabase.setTempVan(van, temp);
+                                DisplayData("(" + showTime() + "): Cai dat nguong tu WEB:", txtShowData);
+                                DisplayData("Van so : " + van, txtShowData);
+                                DisplayData("Nhiet do : " + temp + "°C", txtShowData);
+                                DisplayData("Do am : " + humi + "%", txtShowData);
+                            }
                         }
                         else
                         {
@@ -803,5 +838,6 @@ namespace Emboard
             }
             catch { }
         }
+
     }
 }

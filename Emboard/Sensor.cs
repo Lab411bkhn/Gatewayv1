@@ -170,6 +170,13 @@ namespace Emboard
             set { img_path = value; }
         }
 
+        private static string timeToTakePhoto = null;
+        public string TimeToTakePhoto
+        {
+            get { return timeToTakePhoto; }
+            set { timeToTakePhoto = value; }
+        }
+
         private static string functionRetask = "00";
         public string FunctionRetask
         {
